@@ -1896,5 +1896,31 @@ document.addEventListener('DOMContentLoaded', () => {
     initMobileMenu();
     enhanceScrollAnimations();
     fixSliderOnMobile();
+    // ========== ПРОВЕРКА НА БИТЫЕ ССЫЛКИ (без ошибок tel/mailto) ==========
+document.addEventListener('DOMContentLoaded', function() {
+    // Проверяем только изображения, игнорируем tel: и mailto:
+    const allImages = document.querySelectorAll('img');
+    const excludePatterns = ['tel:', 'mailto:', 'javascript:', '#'];
+    
+    allImages.forEach(img => {
+        // Проверяем только если src не начинается с запрещенных паттернов
+        const src = img.src || img.getAttribute('src');
+        if (src && !excludePatterns.some(pattern => src.startsWith(pattern))) {
+            img.addEventListener('error', function() {
+                console.warn('❌ Битое изображение (404):', this.src);
+                // Можно заменить на заглушку
+                this.src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 24 24" fill="none" stroke="%23DF96A2" stroke-width="2"%3E%3Cpath d="M12 2a10 10 0 1 0 10 10 10 10 0 0 0-10-10zM12 6a4 4 0 1 1-4 4 4 4 0 0 1 4-4z"/%3E%3C/svg%3E';
+                this.style.objectFit = 'contain';
+                this.style.padding = '10px';
+            });
+        }
+    });
+    
+    // Отдельно обрабатываем tel: и mailto: (они НЕ являются ошибкой)
+    const telLinks = document.querySelectorAll('a[href^="tel:"]');
+    const mailLinks = document.querySelectorAll('a[href^="mailto:"]');
+    
+    console.log(`✅ Найдено телефонов: ${telLinks.length}, email: ${mailLinks.length}`);
+    console.log('ℹ️ tel: и mailto: ссылки работают корректно — это не ошибки');
 });
 });
