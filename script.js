@@ -1896,7 +1896,8 @@ document.addEventListener('DOMContentLoaded', () => {
     initMobileMenu();
     enhanceScrollAnimations();
     fixSliderOnMobile();
-    // ========== ПРОВЕРКА НА БИТЫЕ ССЫЛКИ (без ошибок tel/mailto) ==========
+});
+// ========== ПРОВЕРКА НА БИТЫЕ ССЫЛКИ (без ошибок tel/mailto) ==========
 document.addEventListener('DOMContentLoaded', function() {
     // Проверяем только изображения, игнорируем tel: и mailto:
     const allImages = document.querySelectorAll('img');
